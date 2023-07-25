@@ -23,11 +23,11 @@ def feature_func(traj):
 
 def main(args):
     # Create the OpenAI Gym environment
-    gym_env = gym.make(args['env'])
+    gym_env = gym.make(args['env'], render_mode="rgb_array")
     
     # Seed for reproducibility
     np.random.seed(args['seed'])
-    gym_env.seed(args['seed'])
+    gym_env.reset(seed=args['seed'])
 
     # Wrap the environment with a feature function
     env = aprel.Environment(gym_env, args['feature_func'])
