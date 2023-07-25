@@ -69,21 +69,22 @@ def generate_trajectories_randomly(env: Environment,
         env.action_space.seed(seed)
         for traj_no in range(trajectories.size, num_trajectories):
             traj = []
-            obs = env.reset()
+            obs, _ = env.reset() # in the latest version of gym, reset returns a tuple with observations and info
             if env_has_rgb_render:
                 try:
-                    frames = [np.uint8(env.render(mode='rgb_array'))]
-                except:
+                    frames = [np.uint8(env.render())]
+                except Exception as e:
+                    print(e)
                     env_has_rgb_render = False
             done = False
             t = 0
             while not done and t < max_episode_length:
                 act = env.action_space.sample()
                 traj.append((obs,act))
-                obs, _, done, _ = env.step(act)
+                obs, _, done, _, _ = env.step(act) # in the latest version of gym, step returns "truncated" as an additional argument
                 t += 1
                 if env_has_rgb_render:
-                    frames.append(np.uint8(env.render(mode='rgb_array')))
+                    frames.append(np.uint8(env.render()))
             traj.append((obs, None))
             if env_has_rgb_render:
                 clip = ImageSequenceClip(frames, fps=30)

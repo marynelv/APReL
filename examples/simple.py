@@ -3,10 +3,10 @@ import numpy as np
 import gym
 
 env_name = 'MountainCarContinuous-v0'
-gym_env = gym.make(env_name)
+gym_env = gym.make(env_name, render_mode="rgb_array")
 
 np.random.seed(0)
-gym_env.seed(0)
+gym_env.reset(seed=0)
 
 def feature_func(traj):
     """Returns the features of the given MountainCar trajectory, i.e. \Phi(traj).
